@@ -1,14 +1,10 @@
-using Sandbox;
 using System;
-using static Sandbox.PhysicsContact;
 
-public sealed class Floor : Component
+public class Floor : Component
 {
 	[RequireComponent] public ModelRenderer modelRenderer { get; set; }
-	[Property] public Island Island { get; set; }
-	[Property] public float Level = 1;
-
-	public static int HighestLevel = 0;
+	public Island Island { get; set; }
+	public float Level = 1;
 
 	public List<Vector4> MovePoint = new List<Vector4>();
 
@@ -17,7 +13,8 @@ public sealed class Floor : Component
 
 	protected override void OnAwake()
 	{
-		Transform.Scale = new Vector3( Level, Level, Transform.Scale.z );
+		var size = 1f + (Level * 0.3f);
+		Transform.Scale = new Vector3( size, size, Transform.Scale.z );
 		FinalPoint = Transform.Position;
 	}
 
@@ -38,3 +35,4 @@ public sealed class Floor : Component
 		}
 	}
 }
+

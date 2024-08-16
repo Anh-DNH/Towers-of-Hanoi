@@ -21,10 +21,10 @@ public sealed class Island : Component
 		//Gizmo.Draw.Color = Color.Red;
 		//Gizmo.Draw.Arrow( pos, pos + new Vector3( 0, 0, 64 ) );
 
-		BBox box = BBox.FromPositionAndSize( Transform.Position + BoxCollider.Center, BoxCollider.Scale );
-		Gizmo.Draw.Color = Color.Green;
-		Gizmo.Draw.LineBBox( box );
-		Gizmo.Draw.Color = Color.White;
+		//BBox box = BBox.FromPositionAndSize( Transform.Position + BoxCollider.Center, BoxCollider.Scale );
+		//Gizmo.Draw.Color = Color.Green;
+		//Gizmo.Draw.LineBBox( box );
+		//Gizmo.Draw.Color = Color.White;
 	}
 
 	//protected override void OnDestroy()

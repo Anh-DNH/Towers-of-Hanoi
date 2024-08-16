@@ -1,0 +1,27 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+
+<root>
+	<div style="
+		position: absolute;
+		background-color: #7f7;
+		left: @mouse_position().x;
+		top: @mouse_position().y;
+		width: 32px;
+		height: 32px;"
+	></div>
+</root>
+
+@code
+{
+	Vector2 mouse_position()
+	{
+		return Mouse.Position;
+	}
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine(mouse_position());
+}

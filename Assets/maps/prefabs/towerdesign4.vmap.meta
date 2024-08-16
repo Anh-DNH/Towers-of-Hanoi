@@ -1,0 +1,19 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "towerdesign4",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "towerdesign4",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": [],
+      "EditorReferences": [],
+      "Metadata": {
+        "SingleAssetSource": "maps/prefabs/towerdesign4.vmap"
+      }
+    }
+  }
+}

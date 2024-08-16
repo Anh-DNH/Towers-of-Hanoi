@@ -1,0 +1,19 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "prefabs",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "prefabs",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": [],
+      "EditorReferences": [],
+      "Metadata": {
+        "SingleAssetSource": "maps/prefabs.vmap"
+      }
+    }
+  }
+}

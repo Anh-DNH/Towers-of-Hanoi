@@ -8,33 +8,16 @@ public sealed class GameController : Component
 	readonly int zOff = 128;
 
 	Island selectedIsland = null;
-	Floor selectedFloor = null;
+	List<Floor> selectedFloor = new List<Floor>();
 
 	Vector3 Begin;
 	Vector3 End;
 
+	//int Money = 2;
 
 	long Step = 0; 
 
 	List<Island> EmptyIslands = new List<Island>();
-
-	Island GetIsland()
-	{
-		var traceResult = Scene.Trace
-			.Ray( Scene.Camera.ScreenPixelToRay( Mouse.Position ), 5000 )
-			.Run();
-		Begin = traceResult.StartPosition;
-		End = traceResult.EndPosition;
-
-		if (traceResult.GameObject == null) return null;
-
-		Floor floor = traceResult.GameObject.Components.Get<Floor>();
-		Island island = traceResult.GameObject.Components.Get<Island>();
-		//Log.Info( $"{floor} ; {island}" );
-		if ( floor != null ) return floor.Island;
-
-		return island;
-	}
 
 	protected override void OnAwake()
 	{
@@ -42,41 +25,43 @@ public sealed class GameController : Component
 		Floor2.HighestLevel = 
 		Floor3.HighestLevel =
 		Floor4.HighestLevel = 1;
+
+		Random.Shared.Next();
 	}
 
 	protected override void OnUpdate()
 	{
 		if ( Input.Pressed( "attack1" ) )
 		{
-			if ( selectedFloor != null )
-				MoveFloorToIsland( GetIsland() );
-			else if ( selectedIsland == null )
+			var newIsland = GetIsland();
+
+			if ( selectedIsland == null)
+				selectedIsland = newIsland;
+
+			if ( selectedIsland != newIsland )
+				MoveFloorToIsland( newIsland );
+			else if ( newIsland != null )
 			{
-				selectedIsland = GetIsland();
-				if ( selectedIsland != null && selectedIsland.Floors.Count > 0 )
-				{
-					//Move the upmost floor up
-					selectedFloor = selectedIsland.Floors[0];
-					var point = new Vector4( selectedFloor.FinalPoint, 0.1f );
-					point.z += zOff;
-					selectedFloor.MovePoint = new List<Vector4> { point };
-				}
-				else
-					selectedIsland = null;
+				if (selectedIsland.Floors.Count == selectedFloor.Count)
+					ReturnFloorToPlace();
+				else if ( selectedIsland.Floors.Count > 0 )
+					AddFloorToList();
 			}
 		}
 
-		if ( selectedIsland != null && selectedIsland.Floors.Count > 0 )
+		if ( selectedFloor.Count != 0 )
 		{
-			Gizmo.Draw.Color = Color.FromRgba( 0xff7777aa );
-			Gizmo.Draw.LineBBox( selectedIsland.Floors[0].modelRenderer.Bounds );
-			Gizmo.Draw.Color = Color.FromRgba( 0xffffffff );
+			foreach( var floor in selectedFloor )
+			{
+				Gizmo.Draw.Color = Color.FromRgba( 0xff7777aa );
+				Gizmo.Draw.LineBBox( floor.modelRenderer.Bounds );
+				Gizmo.Draw.Color = Color.FromRgba( 0xffffffff );
+			}
 		}
 
 		if (Begin != End )
 			Gizmo.Draw.Arrow( Begin, End, 24, 16 );
 
-		//Log.Info( EmptyIslands.Count );
 		foreach(var i in EmptyIslands)
 		{
 			var BoxCollider = i.GameObject.Components.Get<BoxCollider>();
@@ -86,50 +71,99 @@ public sealed class GameController : Component
 			Gizmo.Draw.Color = Color.White;
 		}
 	}
+	Island GetIsland()
+	{
+		var traceResult = Scene.Trace
+			.Ray( Scene.Camera.ScreenPixelToRay( Mouse.Position ), 5000 )
+			.Run();
+		Begin = traceResult.StartPosition;
+		End = traceResult.EndPosition;
+
+		if ( traceResult.GameObject == null ) return null;
+
+		Floor floor = traceResult.GameObject.Components.Get<Floor>();
+		Island island = traceResult.GameObject.Components.Get<Island>();
+		//Log.Info( $"{floor} ; {island}" );
+		if ( floor != null ) return floor.Island;
+
+		return island;
+	}
+
+	void AddFloorToList()
+	{
+		//Move the upmost floor up
+		var floor = selectedIsland.Floors[selectedFloor.Count];
+
+		//Add floor to list if there's only one floor left on island
+		//or below floor has the same level
+		if ( selectedFloor.Count == 0 || selectedFloor[0].Level == floor.Level )
+		{
+			selectedFloor.Add( floor );
+			var point = new Vector4( floor.FinalPoint, 0.1f );
+			point.z += zOff;
+			floor.MovePoint = new List<Vector4> { point };
+		}
+		else if (selectedFloor[0].Level != floor.Level )
+			ReturnFloorToPlace();
+	}
 	
 	void MoveFloorToIsland( Island newIsland )
 	{
 		//Return to pos if the Tracer traced to nothing
-		if ( newIsland == null || newIsland == selectedIsland )
+		if ( newIsland == null)
 			ReturnFloorToPlace();
 
 		//Place floor on an empty island
 		else if ( newIsland.Floors.Count == 0 )
 		{
-			//Move path
-			List<Vector4> vec4 = new List<Vector4>();
-			var pos = newIsland.Transform.Position + newIsland.OriginPoint;
-			var point = new Vector4( pos, 0.25f );
-			point.z += zOff;
-			vec4.Add( point );
+			float height = 0f;
+			for (int i = selectedFloor.Count - 1; i >= 0; i-- )
+			{
+				//Move path
+				List<Vector4> vec4 = new List<Vector4>();
+				var pos = newIsland.Transform.Position + newIsland.OriginPoint;
+				pos.z += height;
+				//pos.z += newIsland.Floors[0].Height;
 
-			point = new Vector4( pos, 0.1f );
-			vec4.Add( point );
+				var point = new Vector4( pos, 0.25f );
+				point.z += zOff;
+				vec4.Add( point );
 
-			selectedFloor.MovePoint = vec4;
+				point = new Vector4( pos, 0.1f );
+				vec4.Add( point );
+				height += selectedFloor[i].Height;
+
+				selectedFloor[i].MovePoint = vec4;
+			}
 
 			PostFloorPlacement( newIsland );
 		}
 
 		//Return to pos if the target island's floor is smaller than selected floor
-		else if ( newIsland.Floors[0].Level < selectedFloor.Level )
+		else if ( newIsland.Floors[0].Level < selectedFloor[0].Level )
 			ReturnFloorToPlace();
 
 		//Place floor on a larger floor
 		else
 		{
-			List<Vector4> vec4 = new List<Vector4>();
-			var pos = newIsland.Floors[0].FinalPoint;
-			pos.z += newIsland.Floors[0].Height;
+			float height = 0f;
+			for ( int i = selectedFloor.Count - 1; i >= 0; i-- )
+			{
+				List<Vector4> vec4 = new List<Vector4>();
+				var pos = newIsland.Floors[0].FinalPoint;
+				pos.z += newIsland.Floors[0].Height;
+				pos.z += height;
 
-			var point = new Vector4( pos, 0.25f );
-			point.z += zOff;
-			vec4.Add( point );
+				var point = new Vector4( pos, 0.25f );
+				point.z += zOff;
+				vec4.Add( point );
 
-			point = new Vector4( pos, 0.1f );
-			vec4.Add( point );
+				point = new Vector4( pos, 0.1f );
+				vec4.Add( point );
+				height += selectedFloor[i].Height;
 
-			selectedFloor.MovePoint = vec4;
+				selectedFloor[i].MovePoint = vec4;
+			}
 
 			PostFloorPlacement( newIsland );
 		}
@@ -137,67 +171,62 @@ public sealed class GameController : Component
 
 	void ReturnFloorToPlace()
 	{
-		//Return the floor to previous place
-		if ( selectedIsland.Floors.Count == 1 )
+		foreach (var i in selectedFloor)
 		{
-			var point = new Vector4( selectedIsland.Transform.Position + selectedIsland.OriginPoint, 0.1f );
-			selectedFloor.MovePoint = new List<Vector4> { point };
-		}
-		else
-		{
-			var point = new Vector4( selectedIsland.Floors[1].FinalPoint, 0.1f );
-			point.z += selectedIsland.Floors[1].Height;
-			selectedFloor.MovePoint = new List<Vector4> { point };
+			var point = new Vector4( i.FinalPoint, 0.1f );
+			point.z -= zOff;
+			i.MovePoint = new List<Vector4> { point };
 		}
 		selectedIsland = null;
-		selectedFloor = null;
+		selectedFloor = new List<Floor>();
 	}
 
 	void PostFloorPlacement( Island newIsland )
 	{
 		Step++;
-		Log.Info( Step );
+		//Log.Info( Step );
 
-		selectedIsland.Floors.RemoveAt( 0 );
-		if (selectedIsland.Floors.Count == 0)
-			{ EmptyIslands.Add( selectedIsland ); }
+		//Exchange floors
+		for ( int i = selectedFloor.Count - 1; i >= 0; i-- )
+		{
+			selectedIsland.Floors.RemoveAt( i );
 
-		selectedFloor.Island = newIsland;
-		newIsland.Floors.Insert( 0, selectedFloor );
+			selectedFloor[i].Island = newIsland;
+			newIsland.Floors.Insert( 0, selectedFloor[i] );
+		}
+		//Log.Info( $"newIsland.Floors.Count = {newIsland.Floors.Count}" );
+
+		//Remove newIsland from EmptyIsland
 		if ( EmptyIslands.Count != 0 )
 		{
-			int i = EmptyIslands.IndexOf( newIsland );
-			if ( i != -1 )
-				{ EmptyIslands.RemoveAt( i ); }
+			int ii = EmptyIslands.IndexOf( newIsland );
+			if ( ii != -1 )
+				EmptyIslands.RemoveAt( ii );
 		}
 
-		//var emptyIsl = EmptyIsland.Count;
-		//var totalIsl = TotalIslands.Count
-		//if ( EmptyIsland.Count > Math.Max(TotalIslands.Count, 2) || EmptyIslands.Count < )
+		//Spawn new floor on a random empty island
+		if ( selectedIsland.Floors.Count == 0 )
+			EmptyIslands.Add( selectedIsland );
 		if ( EmptyIslands.Count >= 2 )
-		{
-			//Log.Info("TIME TO ADD NEW FLOOR");
 			SpawnFloor( EmptyIslands[Random.Shared.Next( 0, EmptyIslands.Count - 1 )] );
-		}
-		//else
-		//{
-		//	Log.Info("It's not the time to add the new floor.. yet");
-		//}
 
 		selectedIsland = null;
-		selectedFloor = null;
+		selectedFloor = new List<Floor>();
 	}
 
 	public void SpawnFloor(Island island)
 	{
+		Log.Info( "Should we spawn floor rn?" );
+
 		GameObject gObj = new GameObject();
 		gObj.Transform.Position = island.Transform.Position + island.OriginPoint + new Vector3( 0, 0, zOff * 8 );
-		Floor floor = Random.Shared.Next( 0, 3 ) switch
+		Floor floor = Random.Shared.Next( 0, 4 )
+		switch
 		{
-			0 => gObj.Components.Create<Floor1>(),
 			1 => gObj.Components.Create<Floor2>(),
 			2 => gObj.Components.Create<Floor3>(),
-			3 => gObj.Components.Create<Floor4>()
+			3 => gObj.Components.Create<Floor4>(),
+			_ => gObj.Components.Create<Floor1>()
 		};
 		floor.MovePoint.Add( new Vector4( island.Transform.Position + island.OriginPoint, 0.125f ) );
 

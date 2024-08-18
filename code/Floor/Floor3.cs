@@ -4,7 +4,7 @@
 
 	protected override void OnAwake()
 	{
-		Log.Info( "Spawned towerdesign3" );
+		//Log.Info( "Spawned towerdesign3" );
 		modelRenderer.Model = Model.Load( @"models\towerdesign3.vmdl" );
 		HighestLevel++;
 		Level = HighestLevel;

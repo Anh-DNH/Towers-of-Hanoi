@@ -1,10 +1,15 @@
-using Sandbox;
-using Sandbox.VR;
 using System;
-using System.Drawing;
 
 public sealed class GameController : Component
 {
+	public enum CtrlMode
+	{
+		Select,
+		Camera,
+		Shop
+	}
+	public CtrlMode ControlMode = CtrlMode.Select;
+
 	readonly int zOff = 128;
 
 	Island selectedIsland = null;
@@ -13,9 +18,11 @@ public sealed class GameController : Component
 	Vector3 Begin;
 	Vector3 End;
 
-	//int Money = 2;
+	long HeighGoal = 5;
 
-	long Step = 0; 
+	public long Money = 0;
+
+	public long Score = 0;
 
 	List<Island> EmptyIslands = new List<Island>();
 
@@ -28,10 +35,9 @@ public sealed class GameController : Component
 
 		Random.Shared.Next();
 	}
-
 	protected override void OnUpdate()
 	{
-		if ( Input.Pressed( "attack1" ) )
+		if ( Input.Pressed( "attack1" ) && ControlMode == CtrlMode.Select )
 		{
 			var newIsland = GetIsland();
 
@@ -62,15 +68,16 @@ public sealed class GameController : Component
 		if (Begin != End )
 			Gizmo.Draw.Arrow( Begin, End, 24, 16 );
 
-		foreach(var i in EmptyIslands)
-		{
-			var BoxCollider = i.GameObject.Components.Get<BoxCollider>();
-			BBox box = BBox.FromPositionAndSize( i.Transform.Position + BoxCollider.Center, BoxCollider.Scale );
-			Gizmo.Draw.Color = Color.Yellow;
-			Gizmo.Draw.LineBBox( box );
-			Gizmo.Draw.Color = Color.White;
-		}
+		//foreach(var i in EmptyIslands)
+		//{
+		//	var BoxCollider = i.GameObject.Components.Get<BoxCollider>();
+		//	BBox box = BBox.FromPositionAndSize( i.Transform.Position + BoxCollider.Center, BoxCollider.Scale );
+		//	Gizmo.Draw.Color = Color.Yellow;
+		//	Gizmo.Draw.LineBBox( box );
+		//	Gizmo.Draw.Color = Color.White;
+		//}
 	}
+	
 	Island GetIsland()
 	{
 		var traceResult = Scene.Trace
@@ -88,7 +95,6 @@ public sealed class GameController : Component
 
 		return island;
 	}
-
 	void AddFloorToList()
 	{
 		//Move the upmost floor up
@@ -106,7 +112,6 @@ public sealed class GameController : Component
 		else if (selectedFloor[0].Level != floor.Level )
 			ReturnFloorToPlace();
 	}
-	
 	void MoveFloorToIsland( Island newIsland )
 	{
 		//Return to pos if the Tracer traced to nothing
@@ -168,7 +173,6 @@ public sealed class GameController : Component
 			PostFloorPlacement( newIsland );
 		}
 	}
-
 	void ReturnFloorToPlace()
 	{
 		foreach (var i in selectedFloor)
@@ -180,11 +184,10 @@ public sealed class GameController : Component
 		selectedIsland = null;
 		selectedFloor = new List<Floor>();
 	}
-
 	void PostFloorPlacement( Island newIsland )
 	{
-		Step++;
-		//Log.Info( Step );
+		Score++;
+		//Log.Info( Score );
 
 		//Exchange floors
 		for ( int i = selectedFloor.Count - 1; i >= 0; i-- )
@@ -194,7 +197,6 @@ public sealed class GameController : Component
 			selectedFloor[i].Island = newIsland;
 			newIsland.Floors.Insert( 0, selectedFloor[i] );
 		}
-		//Log.Info( $"newIsland.Floors.Count = {newIsland.Floors.Count}" );
 
 		//Remove newIsland from EmptyIsland
 		if ( EmptyIslands.Count != 0 )
@@ -202,6 +204,19 @@ public sealed class GameController : Component
 			int ii = EmptyIslands.IndexOf( newIsland );
 			if ( ii != -1 )
 				EmptyIslands.RemoveAt( ii );
+		}
+
+		if ( newIsland.Floors.Count >= HeighGoal )
+		{
+			HeighGoal += 5;
+			Log.Info( "Reward player with 5 dongs" );
+			Money += 5;
+		}
+
+		if ( newIsland.Floors.Count % 5 == 0 && CheckType( newIsland ) )
+		{
+			Log.Info( "Reward player with 10 dongs" );
+			Money += 10;
 		}
 
 		//Spawn new floor on a random empty island
@@ -213,10 +228,9 @@ public sealed class GameController : Component
 		selectedIsland = null;
 		selectedFloor = new List<Floor>();
 	}
-
-	public void SpawnFloor(Island island)
+	void SpawnFloor(Island island)
 	{
-		Log.Info( "Should we spawn floor rn?" );
+		//Log.Info( "Should we spawn floor rn?" );
 
 		GameObject gObj = new GameObject();
 		gObj.Transform.Position = island.Transform.Position + island.OriginPoint + new Vector3( 0, 0, zOff * 8 );
@@ -234,5 +248,17 @@ public sealed class GameController : Component
 		int i = EmptyIslands.IndexOf( island );
 		if ( i != -1 )
 			{ EmptyIslands.RemoveAt( i ); }
+	}
+
+	bool CheckType( Island island )
+	{
+		var type = island.Floors[0];
+		foreach ( var floor in island.Floors )
+		{
+			//Log.Info( $"{floor.GetType()} ; {type.GetType()}" );
+			if ( floor.GetType() != type.GetType() )
+				return false;
+		}
+		return true;
 	}
 }

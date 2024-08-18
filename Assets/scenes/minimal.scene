@@ -32,7 +32,7 @@
         {
           "__type": "Sandbox.SkyBox2D",
           "__guid": "de79e9e0-5c37-4c54-ac67-bfcdb1d5483b",
-          "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+          "SkyMaterial": "materials/skybox/skybox_sunrise_01.vmat",
           "Tint": "1,1,1,1"
         },
         {
@@ -233,6 +233,7 @@
       "__guid": "3c782d8c-1b37-4ff8-8fae-33d07b77625b",
       "Flags": 0,
       "Name": "IslandCtrl",
+      "Position": "-384,0,0",
       "Enabled": true,
       "Components": [
         {
@@ -261,6 +262,7 @@
       "__guid": "12e9fd5b-cf6d-41ee-82ad-a668559f2b78",
       "Flags": 0,
       "Name": "Island",
+      "Position": "-384,0,0",
       "Enabled": true,
       "Components": [
         {
@@ -279,7 +281,7 @@
       "__guid": "a62a5fc7-adfb-464f-8691-e900892d9d9b",
       "Flags": 0,
       "Name": "IslandCtrl2",
-      "Position": "0,-736,0",
+      "Position": "384,-448,0",
       "Enabled": true,
       "Components": [
         {
@@ -315,7 +317,7 @@
       "__guid": "4474f7d5-f92e-4adb-9f57-fb74f69d027d",
       "Flags": 0,
       "Name": "Island2",
-      "Position": "0,-736,0",
+      "Position": "384,-448,0",
       "Enabled": true,
       "Components": [
         {
@@ -334,7 +336,7 @@
       "__guid": "b21104d2-cf10-4754-8ec6-82bfe4ea5be3",
       "Flags": 0,
       "Name": "IslandCtrl3",
-      "Position": "0,736,0",
+      "Position": "384,448,0",
       "Enabled": true,
       "Components": [
         {
@@ -376,7 +378,7 @@
       "__guid": "ca46cae8-7677-482c-8edf-f2cf7d7d5856",
       "Flags": 0,
       "Name": "Island3",
-      "Position": "0,736,0",
+      "Position": "384,448,0",
       "Enabled": true,
       "Components": [
         {
@@ -395,7 +397,7 @@
       "__guid": "9f9214dc-c9aa-4d8d-ae87-ead6b37aa04c",
       "Flags": 0,
       "Name": "Floor1",
-      "Position": "0,736,96",
+      "Position": "384,448,96",
       "Enabled": true,
       "Components": [
         {
@@ -423,7 +425,7 @@
       "__guid": "647e44f3-e145-4d0b-9e96-0eaf8bd3e8ee",
       "Flags": 0,
       "Name": "Floor2",
-      "Position": "0,-736,48",
+      "Position": "384,-448,48",
       "Enabled": true,
       "Components": [
         {
@@ -451,7 +453,7 @@
       "__guid": "f55d6a06-f623-4238-bcbb-4a96ca703e14",
       "Flags": 0,
       "Name": "Floor3",
-      "Position": "0,736,48",
+      "Position": "384,448,48",
       "Enabled": true,
       "Components": [
         {

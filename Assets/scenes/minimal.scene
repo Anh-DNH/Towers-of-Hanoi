@@ -1,5 +1,5 @@
 {
-  "__guid": "dd96f794-a951-46ba-abec-6518fe24b701",
+  "__guid": "a950872e-2753-4dad-b80b-21c9ab5ad6a3",
   "GameObjects": [
     {
       "__guid": "bfc59c12-1ed2-4f91-8956-a95a315eac3c",
@@ -104,6 +104,18 @@
         {
           "__type": "GameController",
           "__guid": "14901e78-415f-429c-9297-0847e8eb7242"
+        },
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "170912d5-9ca0-4ff4-a772-c82fd1c78f34",
+          "AutoScreenScale": false,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        },
+        {
+          "__type": "HUD",
+          "__guid": "13ea0695-d98b-4f0e-8c05-547c9afa6e3a"
         }
       ],
       "Children": [
@@ -233,7 +245,6 @@
       "__guid": "3c782d8c-1b37-4ff8-8fae-33d07b77625b",
       "Flags": 0,
       "Name": "IslandCtrl",
-      "Position": "-384,0,0",
       "Enabled": true,
       "Components": [
         {
@@ -262,7 +273,6 @@
       "__guid": "12e9fd5b-cf6d-41ee-82ad-a668559f2b78",
       "Flags": 0,
       "Name": "Island",
-      "Position": "-384,0,0",
       "Enabled": true,
       "Components": [
         {
@@ -281,7 +291,7 @@
       "__guid": "a62a5fc7-adfb-464f-8691-e900892d9d9b",
       "Flags": 0,
       "Name": "IslandCtrl2",
-      "Position": "384,-448,0",
+      "Position": "0,-672,0",
       "Enabled": true,
       "Components": [
         {
@@ -317,7 +327,7 @@
       "__guid": "4474f7d5-f92e-4adb-9f57-fb74f69d027d",
       "Flags": 0,
       "Name": "Island2",
-      "Position": "384,-448,0",
+      "Position": "0,-672,0",
       "Enabled": true,
       "Components": [
         {
@@ -336,7 +346,7 @@
       "__guid": "b21104d2-cf10-4754-8ec6-82bfe4ea5be3",
       "Flags": 0,
       "Name": "IslandCtrl3",
-      "Position": "384,448,0",
+      "Position": "0,672,0",
       "Enabled": true,
       "Components": [
         {
@@ -378,7 +388,7 @@
       "__guid": "ca46cae8-7677-482c-8edf-f2cf7d7d5856",
       "Flags": 0,
       "Name": "Island3",
-      "Position": "384,448,0",
+      "Position": "0,672,0",
       "Enabled": true,
       "Components": [
         {
@@ -397,7 +407,7 @@
       "__guid": "9f9214dc-c9aa-4d8d-ae87-ead6b37aa04c",
       "Flags": 0,
       "Name": "Floor1",
-      "Position": "384,448,96",
+      "Position": "0,672,128",
       "Enabled": true,
       "Components": [
         {
@@ -410,7 +420,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/towerdesign1.vmdl",
           "RenderType": "On",
-          "Tint": "0.90698,0.88462,0.6834,1"
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -425,7 +435,7 @@
       "__guid": "647e44f3-e145-4d0b-9e96-0eaf8bd3e8ee",
       "Flags": 0,
       "Name": "Floor2",
-      "Position": "384,-448,48",
+      "Position": "0,-672,48",
       "Enabled": true,
       "Components": [
         {
@@ -438,7 +448,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/towerdesign1.vmdl",
           "RenderType": "On",
-          "Tint": "0.90698,0.88462,0.6834,1"
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -453,7 +463,7 @@
       "__guid": "f55d6a06-f623-4238-bcbb-4a96ca703e14",
       "Flags": 0,
       "Name": "Floor3",
-      "Position": "384,448,48",
+      "Position": "0,672,48",
       "Enabled": true,
       "Components": [
         {
@@ -466,7 +476,7 @@
           "BodyGroups": 18446744073709551615,
           "Model": "models/towerdesign1.vmdl",
           "RenderType": "On",
-          "Tint": "0.90698,0.88462,0.6834,1"
+          "Tint": "1,1,1,1"
         },
         {
           "__type": "Sandbox.ModelCollider",
@@ -482,7 +492,6 @@
       "Flags": 0,
       "Name": "HUD",
       "Position": "-1537.23,6083.645,3468.205",
-      "Enabled": true,
       "Components": [
         {
           "__type": "Sandbox.ScreenPanel",
@@ -500,7 +509,7 @@
     }
   ],
   "SceneProperties": {
-    "FixedUpdateFrequency": 50,
+    "FixedUpdateFrequency": 60,
     "MaxFixedUpdates": 5,
     "NetworkFrequency": 60,
     "NetworkInterpolation": true,

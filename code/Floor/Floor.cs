@@ -13,12 +13,13 @@ public class Floor : Component
 
 	protected override void OnAwake()
 	{
-		var size = 1f + (Level * 0.3f);
-		Transform.Scale = new Vector3( size, size, Transform.Scale.z );
+		var size = 1f + ((Level - 1) * 0.3f);
+		Height *= size;
+		Transform.Scale = new Vector3( size );
 		FinalPoint = Transform.Position;
 	}
 
-	protected override void OnUpdate()
+	protected override void OnFixedUpdate()
 	{
 		if ( MovePoint.Count > 0 )
 		{

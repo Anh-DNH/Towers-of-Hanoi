@@ -4,10 +4,12 @@
 
 	protected override void OnAwake()
 	{
+		Height = 42;
 		//Log.Info( "Spawned towerdesign1" );
 		modelRenderer.Model = Model.Load( @"models\towerdesign1.vmdl" );
 		HighestLevel++;
 		Level = HighestLevel;
+
 
 		base.OnAwake();
 	}

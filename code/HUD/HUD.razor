@@ -3,22 +3,21 @@
 @inherits PanelComponent
 
 <root>
-	@{ string br = $"[\U0001F320]Money: {GetMoney()}\n[\U0001F320]Point: {GetScore()}"; }
+	@{ string br = $"[\U0001F7E1]Money: {GetMoney()}\n[\U0001F320]Point: {GetScore()}"; }
 	<div style="
 		position: absolute;
 		background-color: #7f7;
 		left: @mouse_position().x;
 		top: @mouse_position().y;
 		width: 32px;
-		height: 32px;"
-	></div>
+		height: 32px;"></div>
 	<div style="position: absolute; left: 0px; top: 0px; white-space: pre-line; font-family: Consolas; font-size: 18px">
 		@br
 	</div>
 </root>
 
 @code
-{ 
+{
 	GameController GameCtrl;
 
 	protected override void OnAwake()

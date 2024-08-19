@@ -26,13 +26,13 @@
     "InputSettings": {
       "Actions": [
         {
-          "Name": "Forward",
+          "Name": "up",
           "KeyboardCode": "W",
           "GamepadCode": "None",
           "GroupName": "Movement"
         },
         {
-          "Name": "Backward",
+          "Name": "down",
           "KeyboardCode": "S",
           "GamepadCode": "None",
           "GroupName": "Movement"

@@ -26,6 +26,8 @@ public sealed class GameController : Component
 
 	List<Island> EmptyIslands = new List<Island>();
 
+	float CamAccel = 0;
+
 	protected override void OnAwake()
 	{
 		Floor1.HighestLevel = 
@@ -35,6 +37,7 @@ public sealed class GameController : Component
 
 		Random.Shared.Next();
 	}
+
 	protected override void OnUpdate()
 	{
 		if ( Input.Pressed( "attack1" ) && ControlMode == CtrlMode.Select )
@@ -68,14 +71,16 @@ public sealed class GameController : Component
 		if (Begin != End )
 			Gizmo.Draw.Arrow( Begin, End, 24, 16 );
 
-		//foreach(var i in EmptyIslands)
-		//{
-		//	var BoxCollider = i.GameObject.Components.Get<BoxCollider>();
-		//	BBox box = BBox.FromPositionAndSize( i.Transform.Position + BoxCollider.Center, BoxCollider.Scale );
-		//	Gizmo.Draw.Color = Color.Yellow;
-		//	Gizmo.Draw.LineBBox( box );
-		//	Gizmo.Draw.Color = Color.White;
-		//}
+		var vInput = (Input.Down("up") ? 1 : 0) - (Input.Down("down") ? 1 : 0);
+		if (vInput != 0)
+			CamAccel = Math.Clamp(CamAccel + (0.1f * vInput), -2, 2);
+		else
+			CamAccel -= 0.1f * CamAccel;
+
+		//Log.Info(String.Format("{0:0.0}", CamAccel));
+		var pos = new Vector3(Scene.Camera.Transform.Position);
+		pos.z += CamAccel;
+		Scene.Camera.Transform.Position = pos;
 	}
 	
 	Island GetIsland()
@@ -95,6 +100,7 @@ public sealed class GameController : Component
 
 		return island;
 	}
+
 	void AddFloorToList()
 	{
 		//Move the upmost floor up
@@ -112,6 +118,7 @@ public sealed class GameController : Component
 		else if (selectedFloor[0].Level != floor.Level )
 			ReturnFloorToPlace();
 	}
+
 	void MoveFloorToIsland( Island newIsland )
 	{
 		//Return to pos if the Tracer traced to nothing
@@ -173,6 +180,7 @@ public sealed class GameController : Component
 			PostFloorPlacement( newIsland );
 		}
 	}
+
 	void ReturnFloorToPlace()
 	{
 		foreach (var i in selectedFloor)
@@ -184,9 +192,10 @@ public sealed class GameController : Component
 		selectedIsland = null;
 		selectedFloor = new List<Floor>();
 	}
+
 	void PostFloorPlacement( Island newIsland )
 	{
-		Score++;
+		Score = Math.Max(0, Score - 1);
 		//Log.Info( Score );
 
 		//Exchange floors
@@ -228,8 +237,10 @@ public sealed class GameController : Component
 		selectedIsland = null;
 		selectedFloor = new List<Floor>();
 	}
+
 	void SpawnFloor(Island island)
 	{
+		Score += 10;
 		//Log.Info( "Should we spawn floor rn?" );
 
 		GameObject gObj = new GameObject();

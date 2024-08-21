@@ -1,0 +1,60 @@
+﻿@using Sandbox;
+@using Sandbox.Services; 
+@inherits PanelComponent
+
+@*<root>
+	@{string br = $"[\U0001F320]Highest Point: {GetPoint()}\n[\U0001F4CF]Highest Height: {GetHeight()}"; }
+	<div style="
+		position: absolute;
+		background-color: #7f7;
+		left: @mouse_position().x;
+		top: @mouse_position().y;
+		width: 32px;
+		height: 32px;"></div>
+	<div style="position: absolute; left: 0px; top: 0px; white-space: pre-line; font-family: Consolas; font-size: 18px">
+		@br
+	</div>
+</root>*@
+<root style="
+	width:@ScreenSize().x;
+	height:@ScreenSize().y;
+	opacity : @opacity
+">
+	@{string txt = $"Point: {GetPoint()}\nHeight: {GetHeight()}"; }
+	<div class="Holder">
+		<label style="height:46px">@txt</label>
+	</div>
+</root>
+
+@code
+{
+	GameController GameCtrl;
+
+	protected override void OnAwake()
+	{
+		GameCtrl = GameObject.Components.Get<GameController>();
+	}
+
+	float opacity = -3;
+
+	protected override void OnFixedUpdate()
+	{
+		opacity += opacity < 1 ? 0.1f : 0;
+	}
+
+	Vector2 ScreenSize() => Screen.Size;
+
+	long GetHeight() => GameCtrl.Highest;
+
+	long GetPoint() => GameCtrl.Point;
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine(
+		ScreenSize(),
+		GetHeight(),
+		GetPoint(),
+		opacity
+	);
+}

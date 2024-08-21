@@ -1,4 +1,4 @@
-HUD
+Leaderboard
 {
 	position: absolute;
 	top: 0;
@@ -11,10 +11,10 @@ HUD
 	//font-weight: bold;
 	//border-radius: 20px;
 
-	//.title
-	//{
-	//	font-size: 25px;
-	//	font-family: Poppins;
-	//	color: #fff;
-	//}
+	.title
+	{
+		font-size: 25px;
+		font-family: Poppins;
+		color: #fff;
+	}
 }

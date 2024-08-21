@@ -9,7 +9,7 @@ public class Floor1 : Floor
 
 	protected override void OnAwake()
 	{
-		Height = 42;
+		Height = 58;
 		//Log.Info( "Spawned towerdesign1" );
 		modelRenderer.Model = Model.Load( @"models\towerdesign1.vmdl" );
 		FloorCtrl.HighestLevel[Type]++;

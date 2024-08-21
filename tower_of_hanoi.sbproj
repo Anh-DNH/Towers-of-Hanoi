@@ -5,9 +5,10 @@
   "Ident": "towers_of_hanoi",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "models/towerdesign1.fbx\nmodels/towerdesign2.fbx\nmodels/towerdesign3.fbx\nmodels/towerdesign4.fbx\nmaps/prefabs.los",
+  "Resources": "models/towerdesign1.fbx\nmodels/towerdesign2.fbx\nmodels/towerdesign3.fbx\nmodels/towerdesign4.fbx\nmaps/prefabs.los\nfonts/ITCKRIST.TTF",
   "PackageReferences": [],
   "EditorReferences": null,
+  "IsWhitelistDisabled": false,
   "Metadata": {
     "MaxPlayers": 64,
     "MinPlayers": 1,

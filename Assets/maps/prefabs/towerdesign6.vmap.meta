@@ -1,0 +1,19 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "towerdesign6",
+      "Type": "map",
+      "Org": "local",
+      "Ident": "towerdesign6",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": [],
+      "EditorReferences": [],
+      "Metadata": {
+        "SingleAssetSource": "maps/prefabs/towerdesign6.vmap"
+      }
+    }
+  }
+}

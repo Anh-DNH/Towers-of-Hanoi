@@ -58,53 +58,11 @@
       ]
     },
     {
-      "__guid": "8502ea1a-cd9b-44b6-a160-3b18ebb2accf",
-      "Flags": 0,
-      "Name": "Cube",
-      "Position": "-71.04937,-46.25518,247.7074",
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "634c1cfa-3c90-4d86-a987-30d0417c0c94",
-          "BodyGroups": 18446744073709551615,
-          "Model": "models/citizen_props/crate01.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.Rigidbody",
-          "__guid": "35c2b689-213d-41ea-966a-a47faf57a52e",
-          "AngularDamping": 64,
-          "Gravity": true,
-          "LinearDamping": 0,
-          "Locking": {},
-          "MassCenterOverride": "0,0,0",
-          "MassOverride": 256,
-          "MotionEnabled": true,
-          "OverrideMassCenter": false,
-          "RigidbodyFlags": 0,
-          "StartAsleep": false
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "223aa439-25de-4d64-98ae-bcf3c49fdf75",
-          "Center": "-2,-0.09999993,18.29998",
-          "IsTrigger": false,
-          "Scale": "36,36,36",
-          "Static": false
-        }
-      ]
-    },
-    {
       "__guid": "2e58ccdd-923b-45ab-8a13-a382ddd8cf63",
       "Flags": 0,
       "Name": "Controller",
       "Enabled": true,
       "Components": [
-        {
-          "__type": "GameController",
-          "__guid": "14901e78-415f-429c-9297-0847e8eb7242"
-        },
         {
           "__type": "Sandbox.ScreenPanel",
           "__guid": "170912d5-9ca0-4ff4-a772-c82fd1c78f34",
@@ -115,7 +73,11 @@
         },
         {
           "__type": "HUD",
-          "__guid": "13ea0695-d98b-4f0e-8c05-547c9afa6e3a"
+          "__guid": "3c04ddb4-ef2a-475d-a948-54fb906499b6"
+        },
+        {
+          "__type": "GameController",
+          "__guid": "14901e78-415f-429c-9297-0847e8eb7242"
         }
       ],
       "Children": [
@@ -272,6 +234,27 @@
               "Volume": 0.09
             }
           ]
+        },
+        {
+          "__guid": "46bdcbe5-18bd-4905-ba64-2f4a7d43d3ae",
+          "Flags": 0,
+          "Name": "Cursor",
+          "Position": "-395.0797,0,67.70009",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "d4af5896-9d8f-476c-a00d-5b188e1653e2",
+              "AutoScreenScale": false,
+              "Opacity": 1,
+              "Scale": 1,
+              "ZIndex": 300
+            },
+            {
+              "__type": "Cursor",
+              "__guid": "30260286-1abb-4ce2-89fe-fb01d2dcb8f6"
+            }
+          ]
         }
       ]
     },
@@ -424,22 +407,80 @@
       ]
     },
     {
-      "__guid": "165f1a11-ec28-4d47-bac7-9fb94fea4528",
+      "__guid": "ca6c52ea-458e-43ad-a2cd-2c335eeef007",
       "Flags": 0,
-      "Name": "HUD",
-      "Position": "-1537.23,6083.645,3468.205",
-      "Components": [
+      "Name": "PauseMenu",
+      "Position": "-2724.117,2.717203,2030.064",
+      "Enabled": true,
+      "Children": [
         {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "a5ebd994-2e62-48c1-b332-334531d05be4",
-          "AutoScreenScale": false,
-          "Opacity": 1,
-          "Scale": 1,
-          "ZIndex": 100
+          "__guid": "818a9eea-7e1d-43ba-b61b-b1f2940c0930",
+          "Flags": 0,
+          "Name": "Main",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "d6a61895-bd68-4697-8b7a-434a0cb09898",
+              "AutoScreenScale": false,
+              "Opacity": 1,
+              "Scale": 1,
+              "ZIndex": 200
+            },
+            {
+              "__type": "PauseMenu",
+              "__guid": "477323b3-7ea3-4aea-9c80-bca9d125d7ec",
+              "GameCtrl": {
+                "_type": "component",
+                "component_id": "14901e78-415f-429c-9297-0847e8eb7242",
+                "go": "2e58ccdd-923b-45ab-8a13-a382ddd8cf63",
+                "component_type": "GameController"
+              }
+            }
+          ]
         },
         {
-          "__type": "HUD",
-          "__guid": "0d1baf8c-a849-4ef1-b31a-00a4cdf75640"
+          "__guid": "8b0d4279-ddac-48c7-88f9-5885f29b612e",
+          "Flags": 0,
+          "Name": "Instruction",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "df9529f0-f353-4f23-8a9b-6930e93bb111",
+              "AutoScreenScale": false,
+              "Opacity": 1,
+              "Scale": 1,
+              "ZIndex": 201
+            },
+            {
+              "__type": "Instruction",
+              "__guid": "369158f5-afb3-44c2-9334-901cf7fa0aec"
+            }
+          ]
+        },
+        {
+          "__guid": "3ce08551-f4a1-489a-b547-7f1079baaedf",
+          "Flags": 0,
+          "Name": "Leaderboard",
+          "Position": "0,0,0",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "3fbee6d7-4acf-4538-8672-ade210057c9f",
+              "AutoScreenScale": false,
+              "Opacity": 1,
+              "Scale": 1,
+              "ZIndex": 202
+            },
+            {
+              "__type": "Leaderboard",
+              "__guid": "adc94720-5434-4104-a98e-edea36c4a3c7"
+            }
+          ]
         }
       ]
     }

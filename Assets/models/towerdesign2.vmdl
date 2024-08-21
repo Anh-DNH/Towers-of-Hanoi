@@ -39,6 +39,56 @@
 					},
 				]
 			},
+			{
+				_class = "PhysicsShapeList"
+				children = 
+				[
+					{
+						_class = "PhysicsMeshFile"
+						name = "towerdesign2"
+						parent_bone = ""
+						surface_prop = "default"
+						collision_tags = "solid"
+						recenter_on_parent_bone = false
+						offset_origin = [ 0.0, 0.0, 0.0 ]
+						offset_angles = [ 0.0, 0.0, 0.0 ]
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						filename = "models/towerdesign2.fbx"
+						import_scale = 1.0
+						maxMeshVertices = 0
+						qemError = 0.0
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = 
+							[
+								"mesh_9Mesh",
+								"mesh_10Mesh",
+								"mesh_11Mesh",
+								"mesh_12Mesh",
+								"mesh_13Mesh",
+								"mesh_15Mesh",
+								"mesh_16Mesh",
+								"mesh_17Mesh",
+								"mesh_18Mesh",
+								"mesh_19Mesh",
+								"mesh_20Mesh",
+								"mesh_21Mesh",
+								"mesh_22Mesh",
+								"mesh_23Mesh",
+								"mesh_24Mesh",
+								"mesh_25Mesh",
+								"mesh_26Mesh",
+								"mesh_27Mesh",
+								"mesh_28Mesh",
+								"mesh_29Mesh",
+							]
+						}
+					},
+				]
+			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""

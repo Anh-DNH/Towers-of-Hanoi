@@ -1,13 +1,14 @@
-﻿public class Floor4 : Floor
+﻿using System;
+
+public class Floor4 : Floor
 {
-	public static int HighestLevel = 1;
+	new public int Type = 3;
 
 	protected override void OnAwake()
 	{
 		//Log.Info( "Spawned towerdesign4" );
 		modelRenderer.Model = Model.Load( @"models\towerdesign4.vmdl" );
-		HighestLevel++;
-		Level = HighestLevel;
+		FloorCtrl.HighestLevel[Type]++;
 
 		base.OnAwake();
 	}

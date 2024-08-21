@@ -1,3 +1,5 @@
+using Sandbox.Audio;
+using Sandbox.Services;
 using System;
 
 public sealed class GameController : Component
@@ -13,54 +15,90 @@ public sealed class GameController : Component
 	readonly int zOff = 128;
 
 	Island selectedIsland = null;
-	List<Floor> selectedFloor = new List<Floor>();
+	List<Floor> selectedFloors = new List<Floor>();
+	List<Floor> matchedFloors = new List<Floor>();
+	List<Floor> matchedFloorsAbove = new List<Floor>();
 
 	Vector3 Begin;
 	Vector3 End;
 
-	long HeighGoal = 5;
-
-	public long Money = 0;
-
+	public long Highest = 1;
 	public long Score = 0;
 
+	List<Island> Islands = new List<Island>();
 	List<Island> EmptyIslands = new List<Island>();
 
 	float CamAccel = 0;
 
 	protected override void OnAwake()
 	{
-		Floor1.HighestLevel = 
-		Floor2.HighestLevel = 
-		Floor3.HighestLevel =
-		Floor4.HighestLevel = 1;
+		FloorCtrl.Restart();
 
 		Random.Shared.Next();
+
+		foreach ( var obj in Scene.Children )
+		{
+			//Log.Info( obj );
+			var island = obj.Components.Get<Island>();
+			if (island != null)
+				Islands.Add( island );
+		}
+
+		foreach ( var island in Islands )
+			SpawnFloor( island );
+
+		Score = 0;
 	}
 
-	protected override void OnUpdate()
+	protected override void OnFixedUpdate()
 	{
 		if ( Input.Pressed( "attack1" ) && ControlMode == CtrlMode.Select )
 		{
 			var newIsland = GetIsland();
 
 			if ( selectedIsland == null)
-				selectedIsland = newIsland;
+				{ selectedIsland = newIsland; }
 
 			if ( selectedIsland != newIsland )
 				MoveFloorToIsland( newIsland );
 			else if ( newIsland != null )
 			{
-				if (selectedIsland.Floors.Count == selectedFloor.Count)
+				if (selectedIsland.Floors.Count == selectedFloors.Count)
 					ReturnFloorToPlace();
 				else if ( selectedIsland.Floors.Count > 0 )
 					AddFloorToList();
 			}
 		}
 
-		if ( selectedFloor.Count != 0 )
+		//Clear matched floors
+		if (
+			matchedFloors.Count > 0 &&
+			matchedFloors[0].MovePoint.Count == 0
+		)
+			{ ClearMatchedFloor(); }
+
+
+		var vInput = Input.MouseWheel.y;
+		if (vInput != 0)
+			CamAccel += 7f * vInput;
+		else
+			CamAccel -= 0.2f * CamAccel;
+
+		//Log.Info(String.Format("{0:0.0}", CamAccel));
+		var pos = new Vector3(Transform.Position);
+		pos.z = Math.Clamp(CamAccel + pos.z, 0, 1440);
+		Transform.Position = pos;
+
+		//Leaderboards.Board
+	}
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		if ( selectedFloors.Count != 0 )
 		{
-			foreach( var floor in selectedFloor )
+			foreach ( var floor in selectedFloors )
 			{
 				Gizmo.Draw.Color = Color.FromRgba( 0xff7777aa );
 				Gizmo.Draw.LineBBox( floor.modelRenderer.Bounds );
@@ -68,21 +106,12 @@ public sealed class GameController : Component
 			}
 		}
 
-		if (Begin != End )
+		if ( Begin != End )
 			Gizmo.Draw.Arrow( Begin, End, 24, 16 );
 
-		var vInput = (Input.Down("up") ? 1 : 0) - (Input.Down("down") ? 1 : 0);
-		if (vInput != 0)
-			CamAccel = Math.Clamp(CamAccel + (0.1f * vInput), -2, 2);
-		else
-			CamAccel -= 0.1f * CamAccel;
 
-		//Log.Info(String.Format("{0:0.0}", CamAccel));
-		var pos = new Vector3(Scene.Camera.Transform.Position);
-		pos.z += CamAccel;
-		Scene.Camera.Transform.Position = pos;
 	}
-	
+
 	Island GetIsland()
 	{
 		var traceResult = Scene.Trace
@@ -104,18 +133,24 @@ public sealed class GameController : Component
 	void AddFloorToList()
 	{
 		//Move the upmost floor up
-		var floor = selectedIsland.Floors[selectedFloor.Count];
+		var floor = selectedIsland.Floors[selectedFloors.Count];
 
 		//Add floor to list if there's only one floor left on island
 		//or below floor has the same level
-		if ( selectedFloor.Count == 0 || selectedFloor[0].Level == floor.Level )
+		if ( selectedFloors.Count == 0 || selectedFloors[0].Level == floor.Level )
 		{
-			selectedFloor.Add( floor );
+			var sound = Sound.Play( "floor-pick", Transform.World.Position );
+			sound.Pitch = 2.0f;
+			sound.Volume = 5.0f;
+
+			floor.PlaySound = false;
+
+			selectedFloors.Add( floor );
 			var point = new Vector4( floor.FinalPoint, 0.1f );
 			point.z += zOff;
 			floor.MovePoint = new List<Vector4> { point };
 		}
-		else if (selectedFloor[0].Level != floor.Level )
+		else if (selectedFloors[0].Level != floor.Level )
 			ReturnFloorToPlace();
 	}
 
@@ -128,8 +163,10 @@ public sealed class GameController : Component
 		//Place floor on an empty island
 		else if ( newIsland.Floors.Count == 0 )
 		{
+			PlayMoveSound();
+
 			float height = 0f;
-			for (int i = selectedFloor.Count - 1; i >= 0; i-- )
+			for (int i = selectedFloors.Count - 1; i >= 0; i-- )
 			{
 				//Move path
 				List<Vector4> vec4 = new List<Vector4>();
@@ -143,23 +180,26 @@ public sealed class GameController : Component
 
 				point = new Vector4( pos, 0.1f );
 				vec4.Add( point );
-				height += selectedFloor[i].Height;
+				height += selectedFloors[i].Height;
 
-				selectedFloor[i].MovePoint = vec4;
+				selectedFloors[i].PlaySound = true;
+				selectedFloors[i].MovePoint = vec4;
 			}
 
 			PostFloorPlacement( newIsland );
 		}
 
 		//Return to pos if the target island's floor is smaller than selected floor
-		else if ( newIsland.Floors[0].Level < selectedFloor[0].Level )
+		else if ( newIsland.Floors[0].Level < selectedFloors[0].Level )
 			ReturnFloorToPlace();
 
 		//Place floor on a larger floor
 		else
 		{
+			PlayMoveSound();
+
 			float height = 0f;
-			for ( int i = selectedFloor.Count - 1; i >= 0; i-- )
+			for ( int i = selectedFloors.Count - 1; i >= 0; i-- )
 			{
 				List<Vector4> vec4 = new List<Vector4>();
 				var pos = newIsland.Floors[0].FinalPoint;
@@ -172,9 +212,10 @@ public sealed class GameController : Component
 
 				point = new Vector4( pos, 0.1f );
 				vec4.Add( point );
-				height += selectedFloor[i].Height;
+				height += selectedFloors[i].Height;
 
-				selectedFloor[i].MovePoint = vec4;
+				selectedFloors[i].PlaySound = true;
+				selectedFloors[i].MovePoint = vec4;
 			}
 
 			PostFloorPlacement( newIsland );
@@ -183,28 +224,31 @@ public sealed class GameController : Component
 
 	void ReturnFloorToPlace()
 	{
-		foreach (var i in selectedFloor)
+		PlayMoveSound();
+
+		foreach (var floor in selectedFloors)
 		{
-			var point = new Vector4( i.FinalPoint, 0.1f );
+			floor.PlaySound = true;
+
+			var point = new Vector4( floor.FinalPoint, 0.1f );
 			point.z -= zOff;
-			i.MovePoint = new List<Vector4> { point };
+			floor.MovePoint = new List<Vector4> { point };
 		}
 		selectedIsland = null;
-		selectedFloor = new List<Floor>();
+		selectedFloors = new List<Floor>();
 	}
 
 	void PostFloorPlacement( Island newIsland )
 	{
 		Score = Math.Max(0, Score - 1);
-		//Log.Info( Score );
 
 		//Exchange floors
-		for ( int i = selectedFloor.Count - 1; i >= 0; i-- )
+		for ( int i = selectedFloors.Count - 1; i >= 0; i-- )
 		{
 			selectedIsland.Floors.RemoveAt( i );
 
-			selectedFloor[i].Island = newIsland;
-			newIsland.Floors.Insert( 0, selectedFloor[i] );
+			selectedFloors[i].Island = newIsland;
+			newIsland.Floors.Insert( 0, selectedFloors[i] );
 		}
 
 		//Remove newIsland from EmptyIsland
@@ -215,38 +259,33 @@ public sealed class GameController : Component
 				EmptyIslands.RemoveAt( ii );
 		}
 
-		if ( newIsland.Floors.Count >= HeighGoal )
-		{
-			HeighGoal += 5;
-			Log.Info( "Reward player with 5 dongs" );
-			Money += 5;
-		}
+		//Check highest
+		if ( newIsland.Floors.Count > Highest )
+			Highest = newIsland.Floors.Count;
 
-		if ( newIsland.Floors.Count % 5 == 0 && CheckType( newIsland ) )
-		{
-			Log.Info( "Reward player with 10 dongs" );
-			Money += 10;
-		}
+		//Check if there's a match-3 floors
+		CheckFloor( newIsland );
 
-		//Spawn new floor on a random empty island
 		if ( selectedIsland.Floors.Count == 0 )
+		{
 			EmptyIslands.Add( selectedIsland );
-		if ( EmptyIslands.Count >= 2 )
-			SpawnFloor( EmptyIslands[Random.Shared.Next( 0, EmptyIslands.Count - 1 )] );
+			//Spawn new floor on a random empty island
+			if ( EmptyIslands.Count >= Islands.Count - 1 )
+				SpawnFloor( EmptyIslands[Random.Shared.Next( 0, EmptyIslands.Count - 1 )] );
+		}
 
 		selectedIsland = null;
-		selectedFloor = new List<Floor>();
+		selectedFloors = new List<Floor>();
 	}
 
 	void SpawnFloor(Island island)
 	{
-		Score += 10;
-		//Log.Info( "Should we spawn floor rn?" );
+		Score += 5;
+		Log.Info( $"Reward player with 5 scores" );
 
 		GameObject gObj = new GameObject();
 		gObj.Transform.Position = island.Transform.Position + island.OriginPoint + new Vector3( 0, 0, zOff * 8 );
-		Floor floor = Random.Shared.Next( 0, 4 )
-		switch
+		Floor floor = Random.Shared.Next( 0, 4 ) switch
 		{
 			1 => gObj.Components.Create<Floor2>(),
 			2 => gObj.Components.Create<Floor3>(),
@@ -261,15 +300,73 @@ public sealed class GameController : Component
 			{ EmptyIslands.RemoveAt( i ); }
 	}
 
-	bool CheckType( Island island )
+	void CheckFloor( Island island )
 	{
-		var type = island.Floors[0];
-		foreach ( var floor in island.Floors )
+		for ( var i = 0; i < island.Floors.Count; i++ )
 		{
-			//Log.Info( $"{floor.GetType()} ; {type.GetType()}" );
-			if ( floor.GetType() != type.GetType() )
-				return false;
+			var type = island.Floors[i].GetType();
+			var match = 1;
+			while (
+				i + match < island.Floors.Count &&
+				type == island.Floors[i + match].GetType()
+			)
+			{
+				type = island.Floors[i + match].GetType();
+				match++;
+			}
+
+			if ( match >= 3 )
+			{
+				matchedFloorsAbove = island.Floors.GetRange( 0, i + match - 1 );
+
+				for ( int j = 0; j < match; j++ )
+				{
+					matchedFloors.Add( island.Floors[i] );
+					island.Floors.RemoveAt( i );
+				}
+				i--;
+			}
 		}
-		return true;
+	}
+
+	void ClearMatchedFloor()
+	{
+		Score += matchedFloors.Count * 10;
+		Log.Info( $"Reward player with {matchedFloors.Count * 10} scores" );
+
+		float height = 0f;
+
+		var island = matchedFloors[0].Island;
+		for ( int i = 0; i < matchedFloors.Count; i++ )
+		{
+			height += matchedFloors[i].Height;
+			matchedFloors[i].GameObject.Destroy();
+		}
+
+		matchedFloors = new List<Floor>();
+
+		if ( island.Floors.Count == 0 )
+		{
+			EmptyIslands.Add( island );
+			if ( EmptyIslands.Count >= Islands.Count - 1 )
+				SpawnFloor( EmptyIslands[Random.Shared.Next( 0, EmptyIslands.Count - 1 )] );
+		}
+		else
+		{
+			foreach ( var floor in matchedFloorsAbove )
+			{
+				var point = new Vector4( floor.FinalPoint, 0.1f );
+				point.z -= height;
+				floor.MovePoint = new List<Vector4> { point };
+			}
+			matchedFloorsAbove = new List<Floor>();
+		}
+	}
+
+	void PlayMoveSound()
+	{
+		var sound = Sound.Play( "floor-move", Transform.World.Position );
+		sound.Pitch = 1.3f;
+		sound.Volume = 5.0f;
 	}
 }

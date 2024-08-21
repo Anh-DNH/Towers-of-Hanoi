@@ -3,7 +3,7 @@
 @inherits PanelComponent
 
 <root>
-	@{ string br = $"[\U0001F7E1]Money: {GetMoney()}\n[\U0001F320]Point: {GetScore()}"; }
+	@{ string br = $"[\U0001F320]Highest Point: {GetScore()}\n[\U0001F4CF]Highest Height: {GetHeight()}"; }
 	<div style="
 		position: absolute;
 		background-color: #7f7;
@@ -22,11 +22,10 @@
 
 	protected override void OnAwake()
 	{
-		base.OnStart();
 		GameCtrl = GameObject.Components.Get<GameController>();
 	}
 
-	long GetMoney() => GameCtrl.Money;
+	long GetHeight() => GameCtrl.Highest;
 
 	long GetScore() => GameCtrl.Score;
 
@@ -38,5 +37,5 @@
 	/// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
 	/// </summary>
-	protected override int BuildHash() => System.HashCode.Combine(mouse_position(), GetMoney(), GetScore());
+	protected override int BuildHash() => System.HashCode.Combine(mouse_position());
 }

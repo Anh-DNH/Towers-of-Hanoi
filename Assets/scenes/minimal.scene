@@ -58,44 +58,6 @@
       ]
     },
     {
-      "__guid": "8502ea1a-cd9b-44b6-a160-3b18ebb2accf",
-      "Flags": 0,
-      "Name": "Cube",
-      "Position": "-71.04937,-46.25518,247.7074",
-      "Components": [
-        {
-          "__type": "Sandbox.ModelRenderer",
-          "__guid": "634c1cfa-3c90-4d86-a987-30d0417c0c94",
-          "BodyGroups": 18446744073709551615,
-          "Model": "models/citizen_props/crate01.vmdl",
-          "RenderType": "On",
-          "Tint": "1,1,1,1"
-        },
-        {
-          "__type": "Sandbox.Rigidbody",
-          "__guid": "35c2b689-213d-41ea-966a-a47faf57a52e",
-          "AngularDamping": 64,
-          "Gravity": true,
-          "LinearDamping": 0,
-          "Locking": {},
-          "MassCenterOverride": "0,0,0",
-          "MassOverride": 256,
-          "MotionEnabled": true,
-          "OverrideMassCenter": false,
-          "RigidbodyFlags": 0,
-          "StartAsleep": false
-        },
-        {
-          "__type": "Sandbox.BoxCollider",
-          "__guid": "223aa439-25de-4d64-98ae-bcf3c49fdf75",
-          "Center": "-2,-0.09999993,18.29998",
-          "IsTrigger": false,
-          "Scale": "36,36,36",
-          "Static": false
-        }
-      ]
-    },
-    {
       "__guid": "2e58ccdd-923b-45ab-8a13-a382ddd8cf63",
       "Flags": 0,
       "Name": "Controller",
@@ -420,26 +382,6 @@
             }
           ],
           "Children": []
-        }
-      ]
-    },
-    {
-      "__guid": "165f1a11-ec28-4d47-bac7-9fb94fea4528",
-      "Flags": 0,
-      "Name": "HUD",
-      "Position": "-1537.23,6083.645,3468.205",
-      "Components": [
-        {
-          "__type": "Sandbox.ScreenPanel",
-          "__guid": "a5ebd994-2e62-48c1-b332-334531d05be4",
-          "AutoScreenScale": false,
-          "Opacity": 1,
-          "Scale": 1,
-          "ZIndex": 100
-        },
-        {
-          "__type": "HUD",
-          "__guid": "0d1baf8c-a849-4ef1-b31a-00a4cdf75640"
         }
       ]
     }

@@ -1,4 +1,3 @@
-using Sandbox.Audio;
 using Sandbox.Services;
 using System;
 
@@ -23,12 +22,14 @@ public sealed class GameController : Component
 	Vector3 End;
 
 	public long Highest = 1;
-	public long Score = 0;
+	public long Point = 0;
 
 	List<Island> Islands = new List<Island>();
 	List<Island> EmptyIslands = new List<Island>();
 
 	float CamAccel = 0;
+
+	Leaderboards.Board Board;
 
 	protected override void OnAwake()
 	{
@@ -47,7 +48,10 @@ public sealed class GameController : Component
 		foreach ( var island in Islands )
 			SpawnFloor( island );
 
-		Score = 0;
+		Point = 0;
+
+		Board = Leaderboards.Get( "highest_tower" );
+		Board.Refresh();
 	}
 
 	protected override void OnFixedUpdate()
@@ -88,8 +92,6 @@ public sealed class GameController : Component
 		var pos = new Vector3(Transform.Position);
 		pos.z = Math.Clamp(CamAccel + pos.z, 0, 1440);
 		Transform.Position = pos;
-
-		//Leaderboards.Board
 	}
 
 	protected override void OnUpdate()
@@ -108,8 +110,6 @@ public sealed class GameController : Component
 
 		if ( Begin != End )
 			Gizmo.Draw.Arrow( Begin, End, 24, 16 );
-
-
 	}
 
 	Island GetIsland()
@@ -240,7 +240,7 @@ public sealed class GameController : Component
 
 	void PostFloorPlacement( Island newIsland )
 	{
-		Score = Math.Max(0, Score - 1);
+		Point = Math.Max(0, Point - 1);
 
 		//Exchange floors
 		for ( int i = selectedFloors.Count - 1; i >= 0; i-- )
@@ -280,8 +280,7 @@ public sealed class GameController : Component
 
 	void SpawnFloor(Island island)
 	{
-		Score += 5;
-		Log.Info( $"Reward player with 5 scores" );
+		AddPlayerPoint( 5 );
 
 		GameObject gObj = new GameObject();
 		gObj.Transform.Position = island.Transform.Position + island.OriginPoint + new Vector3( 0, 0, zOff * 8 );
@@ -331,8 +330,7 @@ public sealed class GameController : Component
 
 	void ClearMatchedFloor()
 	{
-		Score += matchedFloors.Count * 10;
-		Log.Info( $"Reward player with {matchedFloors.Count * 10} scores" );
+		AddPlayerPoint( matchedFloors.Count * 10 );
 
 		float height = 0f;
 
@@ -368,5 +366,12 @@ public sealed class GameController : Component
 		var sound = Sound.Play( "floor-move", Transform.World.Position );
 		sound.Pitch = 1.3f;
 		sound.Volume = 5.0f;
+	}
+	
+	void AddPlayerPoint(int score)
+	{
+		Point += score;
+		Log.Info( $"Reward player with {score} scores" );
+		Stats.SetValue( "hipoint", Point );
 	}
 }

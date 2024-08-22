@@ -72,12 +72,12 @@
           "ZIndex": 100
         },
         {
-          "__type": "HUD",
-          "__guid": "3c04ddb4-ef2a-475d-a948-54fb906499b6"
-        },
-        {
           "__type": "GameController",
           "__guid": "14901e78-415f-429c-9297-0847e8eb7242"
+        },
+        {
+          "__type": "HUD",
+          "__guid": "c85711a5-a164-45c8-ba39-de94e84af0df"
         }
       ],
       "Children": [
@@ -252,7 +252,7 @@
             },
             {
               "__type": "Cursor",
-              "__guid": "30260286-1abb-4ce2-89fe-fb01d2dcb8f6"
+              "__guid": "bb8a4912-3703-477e-832c-6619f2ef0634"
             }
           ]
         }
@@ -430,12 +430,24 @@
             },
             {
               "__type": "PauseMenu",
-              "__guid": "477323b3-7ea3-4aea-9c80-bca9d125d7ec",
+              "__guid": "40777241-7280-467a-8a98-1a16ff8c8776",
               "GameCtrl": {
                 "_type": "component",
                 "component_id": "14901e78-415f-429c-9297-0847e8eb7242",
                 "go": "2e58ccdd-923b-45ab-8a13-a382ddd8cf63",
                 "component_type": "GameController"
+              },
+              "Instruction": {
+                "_type": "component",
+                "component_id": "02964e2b-f436-4c4d-9216-9dc7f3811ff3",
+                "go": "8b0d4279-ddac-48c7-88f9-5885f29b612e",
+                "component_type": "Instruction"
+              },
+              "Leaderboard": {
+                "_type": "component",
+                "component_id": "66fc3b38-9301-4f47-ad53-e216af42eef4",
+                "go": "3ce08551-f4a1-489a-b547-7f1079baaedf",
+                "component_type": "Leaderboard"
               }
             }
           ]
@@ -457,7 +469,7 @@
             },
             {
               "__type": "Instruction",
-              "__guid": "369158f5-afb3-44c2-9334-901cf7fa0aec"
+              "__guid": "02964e2b-f436-4c4d-9216-9dc7f3811ff3"
             }
           ]
         },
@@ -478,7 +490,7 @@
             },
             {
               "__type": "Leaderboard",
-              "__guid": "adc94720-5434-4104-a98e-edea36c4a3c7"
+              "__guid": "66fc3b38-9301-4f47-ad53-e216af42eef4"
             }
           ]
         }

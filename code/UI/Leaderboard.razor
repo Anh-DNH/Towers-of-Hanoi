@@ -1,15 +1,123 @@
 @using Sandbox;
-@using Sandbox.UI;
+@using Sandbox.Services;
 @inherits PanelComponent
 
-<root>
+<root style="
+	opacity: @(Visible ? 1 : 0);
+	width: @Aspect().x;
+	height: @Aspect().y;
+	pointer-events: @(Visible ? "all" : "none");
+">
+	<div class="Holder">
+		<div class="Button"
+			 style="left:64px; top:12px;"
+			 onclick=@OnPointBtonClick
+		>Point</div>
+		<div class="Button"
+			 style="right:64px; top:12px;"
+			 onclick=@OnTowerBtonClick
+		>Height</div>
+
+		<div class="Board">
+			@{ var a = 150; }
+			<div class="Row"
+				 style="background-color:#00000099">
+				<div class="Head" style="width:@a">Rank</div>
+				<div class="Head">Name</div>
+				<div class="Head">Score</div>
+			</div>
+
+			@for (var i = 0; i < DisplayBoard.Entries.Length; i++)
+			{
+				@{var e = DisplayBoard.Entries[i]; }
+				<div class="Row"
+						style="background-color:@(i % 2 == 0 ? "#00000000" : "#00000055")">
+					<div class="Data" style="width:@a">@e.Rank</div>
+					<div class="Data">@e.DisplayName</div>
+					<div class="Data">@e.Value</div>
+				</div>
+			}
+			@*@for (var i = 0; i < 10; i++)
+				{
+					<div class="Row"
+						 style="background-color:@(i % 2 == 0 ? "#00000000" : "#00000055")">
+						<div class="Data" style="width: 150px">@i</div>
+						<div class="Data">Hello Abyss</div>
+						<div class="Data">@(System.Random.Shared.Next())</div>
+					</div>
+				}*@
+		</div>
+
+	</div>
+	<div 
+		class="Button"
+		style="right:12px; bottom:12px;"
+		onclick=@OnClose
+	>
+		Close
+	</div>
+	@*<div>You are at th place</div>
+		<div>Highest point:</div>
+		<div>You are at th place</div>
+		<div>Highest height:</div>*@
 </root>
 
 @code
 {
+	Leaderboards.Board PointBoard;
+	Leaderboards.Board TowerBoard;
+	Leaderboards.Board DisplayBoard;
+
+	public bool Visible = false;
+
+	bool Refresh = false;
+
+	//protected override void OnAwake()
+	//{
+	//	base.OnAwake();
+	//}
+
+	protected override void OnAwake()
+	{
+		base.OnAwake();
+
+		PointBoard = Leaderboards.Get("highest_point");
+		PointBoard.MaxEntries = 10;
+		PointBoard.Refresh();
+
+		TowerBoard = Leaderboards.Get("highest_tower");
+		TowerBoard.MaxEntries = 10;
+		TowerBoard.Refresh();
+
+		DisplayBoard = PointBoard;
+	}
+
+	protected override void OnUpdate()
+	{
+		if (!Visible)
+			Refresh = true;
+		else if (Refresh)
+		{
+			Refresh = false;
+			PointBoard.Refresh();
+			TowerBoard.Refresh();
+		}
+	}
+
+	void OnPointBtonClick() => DisplayBoard = PointBoard;
+
+	void OnTowerBtonClick() => DisplayBoard = TowerBoard;
+
+	void OnClose() => Visible = false;
+
+	Vector2 Aspect() => Screen.Size;
 
 	/// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
 	/// </summary>
-	protected override int BuildHash() => System.HashCode.Combine( "" );
+	protected override int BuildHash() => System.HashCode.Combine(
+		Visible,
+		DisplayBoard,
+		Aspect()
+	);
 }

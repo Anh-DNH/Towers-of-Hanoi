@@ -51,14 +51,7 @@ public sealed class GameController : Component
 			SpawnFloor( island );
 
 		Point = 0;
-
-		Board = Leaderboards.Get( "highest_tower" );
-		Board.Refresh();
-	}
-
-	protected override void OnFixedUpdate()
-	{
-		
+		Stats.SetValue( "hipoint", 0 );
 	}
 
 	protected override void OnUpdate()
@@ -274,7 +267,10 @@ public sealed class GameController : Component
 
 		//Check highest
 		if ( newIsland.Floors.Count > Highest )
+		{
 			Highest = newIsland.Floors.Count;
+			Stats.SetValue( "hitower", Highest );
+		}
 
 		//Check if there's a match-3 floors
 		CheckFloor( newIsland );

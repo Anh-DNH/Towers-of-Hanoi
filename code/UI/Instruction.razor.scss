@@ -1,20 +1,122 @@
-Instruction
-{
+Instruction {
 	position: absolute;
-	top: 0;
 	left: 0;
-	//right: 0;
-	//bottom: 0;
-	//background-color: #444;
-	//justify-content: center;
-	//align-items: center;
-	//font-weight: bold;
-	//border-radius: 20px;
+	top: 0;
+	font-family: Socafe;
+	white-space: pre-line;
+	justify-content: center;
+	align-items: center;
+	pointer-events: all;
 
-	.title
-	{
-		font-size: 25px;
-		font-family: Poppins;
-		color: #fff;
+	.Holder {
+		position: relative;
+		width: 720px;
+		height: 400px;
+		background-color: #ff7777ce;
+		border: 3px solid #330000ce;
+		border-radius: 7px;
+		font-size: 22px;
+		text-align: center;
+	}
+
+	.Button {
+		width: auto;
+		height: auto;
+		padding: 6px 12px;
+		background-color: #ff7777ce;
+		border: 3px solid #330000ce;
+		border-radius: 7px;
+		font-size: 22px;
+		text-align: center;
+
+		&:hover {
+			color: rgb(253, 200, 169);
+		}
+
+		&:active {
+			color: black;
+		}
+	}
+	//
+	.Text0 {
+		position: absolute;
+		left: 12px;
+		top: 48px;
+	}
+
+	.Text1 {
+		position: absolute;
+		right: 70px;
+		top: 40px;
+	}
+
+	.Text2 {
+		position: absolute;
+		left: 250px;
+		bottom: 40px;
+	}
+
+	.Image0 {
+		position: absolute;
+		left: 200px;
+		top: 96px;
+	}
+	//
+	//
+	.Text3 {
+		position: absolute;
+		right: 80px;
+		top: 160px;
+	}
+
+	.Text3_1 {
+		position: absolute;
+		transform: rotate(-26);
+		font-size: 16px;
+		left: 146px;
+		top: 160px;
+	}
+
+	.Text3_2 {
+		position: absolute;
+		transform: rotate(32);
+		font-size: 20px;
+		left: 232px;
+		top: 190px;
+	}
+
+	.Text3_3 {
+		position: absolute;
+		transform: rotate(7);
+		font-size: 18px;
+		left: 160px;
+		top: 250px;
+	}
+
+	.Image1 {
+		position: absolute;
+		left: 170px;
+		top: 120px;
+	}
+	//
+	//
+	.Text4 {
+		position: absolute;
+		left: 100px;
+		top: 128px;
+	}
+
+	.Text5 {
+		position: absolute;
+		right: 186px;
+		bottom: 96px;
+		transform: rotate(7);
+		font-size: 9px;
+	}
+
+	.Image2 {
+		position: absolute;
+		right: 140px;
+		top: 106px;
 	}
 }

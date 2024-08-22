@@ -1,0 +1,57 @@
+@using Sandbox;
+@using Sandbox.Services; 
+@inherits PanelComponent
+
+<root>
+	@{ string br = $"[\U0001F320]Highest Point: {GetPoint()}\n[\U0001F4CF]Highest Height: {GetHeight()}"; }
+	<div style="
+		position: absolute;
+		background-color: #7f7;
+		left: @mouse_position().x;
+		top: @mouse_position().y;
+		width: 32px;
+		height: 32px;"></div>
+	<div style="position: absolute; left: 0px; top: 0px; white-space: pre-line; font-family: Consolas; font-size: 18px">
+		@br
+	</div>
+</root>
+
+@code
+{
+	GameController GameCtrl;
+
+	protected override void OnAwake()
+	{
+		GameCtrl = GameObject.Components.Get<GameController>();
+	}
+
+	//protected override void OnFixedUpdate()
+	//{
+	//	//base.OnFixedUpdate();
+
+	//	//var board = Leaderboards.Get("towers_of_hanoi");
+	//	//board.MaxEntries = 10;
+
+	//	//board.Refresh();
+
+	//	//// print entries
+	//	//foreach (var e in board.Entries)
+	//	//{
+	//	//	Log.Info($"[{e.Rank}] {e.DisplayName} - {e.Value}");
+	//	//}
+	//}
+
+	long GetHeight() => GameCtrl.Highest;
+
+	long GetPoint() => GameCtrl.Point;
+
+	Vector2 mouse_position()
+	{
+		return Mouse.Position;
+	}
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine(mouse_position());
+}

@@ -123,6 +123,7 @@ public sealed class GameController : Component
 		var pos = new Vector3(Transform.Position);
 		pos.z = Math.Clamp(CamAccel + pos.z, 0, 1440);
 		Transform.Position = pos;
+		
 	}
 
 	Island GetIsland()

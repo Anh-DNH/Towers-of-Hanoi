@@ -6,14 +6,6 @@ public sealed class GameController : Component
 {
 	public bool GamePause = false;
 
-	public enum CtrlMode
-	{
-		Select,
-		Camera,
-		Shop
-	}
-	public CtrlMode ControlMode = CtrlMode.Select;
-
 	readonly int zOff = 128;
 
 	Island selectedIsland = null;
@@ -53,6 +45,19 @@ public sealed class GameController : Component
 		Stats.SetValue( "hipoint", 0 );
 	}
 
+	protected override void OnFixedUpdate()
+	{
+		if ( GamePause )
+			return;
+
+		var vInput = Input.MouseWheel.y;
+		if ( vInput != 0 )
+			CamAccel += 7f * vInput;
+		else
+			CamAccel -= 0.2f * CamAccel;
+
+	}
+
 	protected override void OnUpdate()
 	{
 		base.OnUpdate();
@@ -79,12 +84,12 @@ public sealed class GameController : Component
 		if (GamePause)
 			return;
 		
-		if ( Input.Pressed( "attack1" ) && ControlMode == CtrlMode.Select )
+		if ( Input.Pressed( "attack1" ) )
 		{
 			var newIsland = GetIsland();
 
 			if ( selectedIsland == null)
-				{ selectedIsland = newIsland; }
+				selectedIsland = newIsland;
 
 			if ( selectedIsland != newIsland )
 				MoveFloorToIsland( newIsland );
@@ -103,14 +108,7 @@ public sealed class GameController : Component
 			matchedFloors[0].MovePoint.Count == 0
 		)
 			{ ClearMatchedFloor(); }
-
-
-		var vInput = Input.MouseWheel.y;
-		if (vInput != 0)
-			CamAccel += 7f * vInput;
-		else
-			CamAccel -= 0.2f * CamAccel;
-
+		
 		//Log.Info(String.Format("{0:0.0}", CamAccel));
 		var pos = new Vector3(Transform.Position);
 		pos.z = Math.Clamp(CamAccel + pos.z, 0, 1440);
@@ -292,11 +290,18 @@ public sealed class GameController : Component
 
 		GameObject gObj = new GameObject();
 		gObj.Transform.Position = island.Transform.Position + island.OriginPoint + new Vector3( 0, 0, zOff * 8 );
-		Floor floor = Random.Shared.Next( 0, 4 ) switch
+		Floor floor = Random.Shared.Next( 
+			0,
+			4 +
+			(Point > 500 ? 1 : 0) +
+			(Point > 1000 ? 1 : 0)
+		) switch
 		{
 			1 => gObj.Components.Create<Floor2>(),
 			2 => gObj.Components.Create<Floor3>(),
 			3 => gObj.Components.Create<Floor4>(),
+			4 => gObj.Components.Create<Floor5>(),
+			5 => gObj.Components.Create<Floor6>(),
 			_ => gObj.Components.Create<Floor1>()
 		};
 		floor.MovePoint.Add( new Vector4( island.Transform.Position + island.OriginPoint, 0.125f ) );
@@ -347,10 +352,17 @@ public sealed class GameController : Component
 		{
 			height += matchedFloors[i].Height;
 
+			var ptc = new GameObject(true, "particle");
+			ptc.Transform.Position = matchedFloors[i].Transform.Position;
+			ptc.Components.Create<SelfDestruct>();
+			var p = ptc.Components.Create<LegacyParticleSystem>();
+			p.Particles = ParticleSystem.Load( "particles/star.vpcf" );
+
+			// pcf.SetPosition( 0, new Vector3( matchedFloors[i].Transform.Position ) );
 			// var pcf = Particles.Create( "particles/star.vpcf" );
 			// pcf.SetPosition( 0, new Vector3( matchedFloors[i].Transform.Position ) );
 			// pcf.Destroy();
-			
+
 			matchedFloors[i].GameObject.Destroy();
 		}
 

@@ -66,47 +66,59 @@ Instruction {
 	.Text3 {
 		position: absolute;
 		right: 80px;
-		top: 160px;
+		top: 90px;
+	}
+
+	.Text4 {
+		position: absolute;
+		left: 140px;
+		bottom: 60px;
 	}
 
 	.Text3_1 {
 		position: absolute;
 		transform: rotate(-26);
 		font-size: 16px;
-		left: 146px;
-		top: 160px;
+		left: 126px;
+		top: 90px;
 	}
 
 	.Text3_2 {
 		position: absolute;
 		transform: rotate(32);
 		font-size: 20px;
-		left: 232px;
-		top: 190px;
+		left: 212px;
+		top: 120px;
 	}
 
 	.Text3_3 {
 		position: absolute;
 		transform: rotate(7);
 		font-size: 18px;
-		left: 160px;
-		top: 250px;
+		left: 140px;
+		top: 180px;
 	}
 
 	.Image1 {
 		position: absolute;
-		left: 170px;
-		top: 120px;
+		left: 150px;
+		top: 50px;
+	}
+
+	.Image2 {
+		position: absolute;
+		right: 180px;
+		bottom: 70px;
 	}
 	//
 	//
-	.Text4 {
+	.Text5 {
 		position: absolute;
 		left: 100px;
 		top: 128px;
 	}
 
-	.Text5 {
+	.Text6 {
 		position: absolute;
 		right: 186px;
 		bottom: 96px;
@@ -114,7 +126,7 @@ Instruction {
 		font-size: 9px;
 	}
 
-	.Image2 {
+	.Image3 {
 		position: absolute;
 		right: 140px;
 		top: 106px;

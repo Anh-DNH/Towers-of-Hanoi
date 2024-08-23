@@ -5,7 +5,7 @@
   "Ident": "towers_of_hanoi",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "fonts/Socafe.ttf\nimages/instruction_1.png\nimages/instruction_2.png\nimages/instruction_3.png",
+  "Resources": "fonts/Socafe.ttf\nimages/instruction_1.png\nimages/instruction_2.png\nimages/instruction_3.png\nimages/instruction_2_1.png",
   "PackageReferences": [],
   "EditorReferences": null,
   "IsWhitelistDisabled": false,

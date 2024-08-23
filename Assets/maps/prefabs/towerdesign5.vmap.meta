@@ -2,10 +2,10 @@
   "publish": {
     "Enabled": false,
     "ProjectConfig": {
-      "Title": "islands",
+      "Title": "towerdesign5",
       "Type": "map",
       "Org": "local",
-      "Ident": "islands",
+      "Ident": "towerdesign5",
       "Schema": 0,
       "IncludeSourceFiles": false,
       "Resources": null,
@@ -13,7 +13,7 @@
       "EditorReferences": [],
       "IsWhitelistDisabled": false,
       "Metadata": {
-        "SingleAssetSource": "maps/islands.vmap"
+        "SingleAssetSource": "maps/prefabs/towerdesign5.vmap"
       }
     }
   }

@@ -1,15 +1,113 @@
 @using Sandbox;
-@using Sandbox.UI;
+@using System;
 @inherits PanelComponent
 
-<root>
+<root style="
+	opacity: @(Visible ? 1 : 0);
+	width: @Aspect().x;
+	height: @Aspect().y;
+	pointer-events: @(Visible ? "all" : "none");
+">
+	<div style="flex-direction: column; row-gap: 4px">
+		<div class="Holder">
+			@switch (Page())
+			{
+				case 0:
+					<div class="Text0">@instr[0]</div>
+					<div class="Text1">@instr[1]</div>
+					<div class="Text2">@instr[2]</div>
+					<img class="Image0"
+						 src="images/instruction_1.png"
+						 alt="Hmm... something went wrong">
+					break;
+				case 1:
+					<div class="Text3">@instr[3]</div>
+					<div class="Text4">@instr[4]</div>
+					<img class="Image1"
+						 src="images/instruction_2.png"
+						 alt="Hmm... something went wrong">
+					<img class="Image2"
+						 src="images/instruction_2_1.png"
+						 alt="Hmm... something went wrong"
+						 >
+					<div class="Text3_1">Click</div>
+					<div class="Text3_2">Click</div>
+					<div class="Text3_3">Click</div>
+					break;
+				case 2:
+		<div class="Text5">@instr[5]</div>
+		<div class="Text6">@instr[6]</div>
+		<img class="Image3"
+			 src="images/instruction_3.png"
+			 alt="Hmm... something went wrong">
+									break;
+							}
+		</div>
+		<div style="flex-direction: row; column-gap:5px;">
+			<div
+				 class="Button"
+				 onclick=@OnPrev
+			>
+				Prev
+			</div>
+			<div
+				 class="Button"
+				 onclick=@OnNext
+			>
+				Next
+			</div>
+			<div
+				 class="Button"
+				 onclick=@OnClose
+			>
+				Close
+			</div>
+		</div>
+	</div>
 </root>
 
 @code
 {
+	int page = 0;
+
+	public bool Visible = false;
+
+	string[] instr = {
+		//Page 1
+		"Pick up the floor\nby left-click on it\n(Or on the island)",
+		"Click on a larger floor\nto place smaller floor\non top",
+		"Floor cannot be moved\nuntil there are\nno floor above",
+
+		//Page 2
+		"You can select multiple\nfloors with the same sizes\nby repeatedly clicking them",
+		"Scroll mouse to\nmove view up\nand down",
+
+		//Page 3
+		"If there are 3 floors\nwith the same color\nstacked to each other,\nYou will be rewarded\nwith extra point!",
+		"(They will also dissappear\nto nothingness too, sadly)"
+	};
+
+	Vector2 Aspect() => Screen.Size;
+
+	protected override void OnFixedUpdate()
+	{
+		if (!Visible)
+			{ page = 0; return; }
+	}
+
+	int Page() => Math.Abs(page % 3);
+
+	void OnClose() => Visible = false;
+	void OnPrev() => page--;
+	void OnNext() => page++;
 
 	/// <summary>
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
 	/// </summary>
-	protected override int BuildHash() => System.HashCode.Combine( "" );
+	protected override int BuildHash() => System.HashCode.Combine(
+		Visible,
+		instr,
+		page,
+		Aspect()
+	);
 }

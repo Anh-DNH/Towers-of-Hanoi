@@ -34,9 +34,9 @@
 
 @code
 {
-	[Property] GameController GameCtrl {get; set;}
-
-	public bool Visible = false;
+	[Property] GameController GameCtrl { get; set; }
+	[Property] Instruction Instruction { get; set; }
+	[Property] Leaderboard Leaderboard { get; set; }
 
 	float animTimer = 0f;
 
@@ -46,11 +46,12 @@
 	{
 		if ( Input.EscapePressed)
 		{
-			Visible = true;
 			Input.EscapePressed = false;
 			GameCtrl.GamePause = !GameCtrl.GamePause;
 		}
-		Log.Info(Visible);
+
+		if (Instruction.Visible) GameCtrl.GamePause = true;
+		if (Leaderboard.Visible) GameCtrl.GamePause = true;
 	}
 
 	protected override void OnFixedUpdate()
@@ -58,20 +59,13 @@
 		base.OnUpdate();
 		animTimer += IsPause() ? 0.1f : -0.1f;
 		animTimer = Math.Clamp(animTimer, 0, 1);
-
 	}
 
 	void OnResume() => GameCtrl.GamePause = false;
 
-	void OnOpenInstruction()
-	{
+	void OnOpenInstruction() => Instruction.Visible = true;
 
-	}
-
-	void OnOpenLeaderboard()
-	{
-
-	}
+	void OnOpenLeaderboard() => Leaderboard.Visible = true;
 
 	void EndGame() => Game.Close();
 
@@ -79,7 +73,6 @@
 	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
 	/// </summary>
 	protected override int BuildHash() => System.HashCode.Combine(
-		Visible,
 		animTimer
 	);
 }

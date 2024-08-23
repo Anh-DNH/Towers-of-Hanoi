@@ -26,6 +26,7 @@
       "Flags": 0,
       "Name": "2D Skybox",
       "Position": "-395.0797,0,67.70009",
+      "Rotation": "0,0,0.2172931,0.9761064",
       "Tags": "skybox",
       "Enabled": true,
       "Components": [
@@ -45,7 +46,7 @@
             "Maxs": "512,512,512"
           },
           "DelayBetweenUpdates": 0.1,
-          "Feathering": 0.02,
+          "Feathering": 0,
           "FrameInterval": 5,
           "MaxDistance": 512,
           "Projection": "Sphere",
@@ -268,141 +269,63 @@
           "__type": "Island",
           "__guid": "04345589-c7e3-498b-a1d4-837e228e1abd",
           "Floors": [],
-          "Map": {
-            "_type": "component",
-            "component_id": "69213af6-6457-4e14-b9ee-188c32a60306",
-            "go": "12e9fd5b-cf6d-41ee-82ad-a668559f2b78",
-            "component_type": "MapInstance"
-          },
-          "OriginPoint": "0,0,128"
+          "OriginPoint": "0,0,0"
         },
         {
           "__type": "Sandbox.BoxCollider",
           "__guid": "cb723fa4-1840-4868-a041-6c28bd30e1e2",
-          "Center": "0,0,23",
+          "Center": "52.59998,-7.100034,-436",
           "IsTrigger": false,
-          "Scale": "640,640,50",
+          "Scale": "640,640,880",
           "Static": false
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "12e9fd5b-cf6d-41ee-82ad-a668559f2b78",
-          "Flags": 0,
-          "Name": "Island",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.MapInstance",
-              "__guid": "69213af6-6457-4e14-b9ee-188c32a60306",
-              "__version": 1,
-              "EnableCollision": false,
-              "MapName": "maps/prefabs.vmap",
-              "NoOrigin": false,
-              "UseMapFromLaunch": false
-            }
-          ],
-          "Children": []
         }
       ]
     },
     {
       "__guid": "b21104d2-cf10-4754-8ec6-82bfe4ea5be3",
       "Flags": 0,
-      "Name": "IslandCtrl3",
-      "Position": "0,736,0",
+      "Name": "IslandCtrl2",
+      "Position": "325.2644,846.0706,0",
+      "Rotation": "0,0,0.1968854,0.9804266",
       "Enabled": true,
       "Components": [
         {
           "__type": "Island",
           "__guid": "7cd3bbf1-7708-4adb-8717-09c7c762d18d",
           "Floors": [],
-          "Map": {
-            "_type": "component",
-            "component_id": "1b87124f-a8d2-42c3-82c2-7cb50155b1c8",
-            "go": "ca46cae8-7677-482c-8edf-f2cf7d7d5856",
-            "component_type": "MapInstance"
-          },
-          "OriginPoint": "0,0,128"
+          "OriginPoint": "0,0,0"
         },
         {
           "__type": "Sandbox.BoxCollider",
           "__guid": "4768e817-3ed3-4850-95b3-b48ba8933564",
-          "Center": "0,0,23",
+          "Center": "-77.6,0,-436",
           "IsTrigger": false,
-          "Scale": "640,640,50",
+          "Scale": "640,640,880",
           "Static": false
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "ca46cae8-7677-482c-8edf-f2cf7d7d5856",
-          "Flags": 0,
-          "Name": "Island3",
-          "Position": "0,0,0",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.MapInstance",
-              "__guid": "1b87124f-a8d2-42c3-82c2-7cb50155b1c8",
-              "__version": 1,
-              "EnableCollision": false,
-              "MapName": "maps/prefabs.vmap",
-              "NoOrigin": false,
-              "UseMapFromLaunch": false
-            }
-          ],
-          "Children": []
         }
       ]
     },
     {
       "__guid": "1b365635-a8d3-4342-83f9-e1e8ed8a4ab7",
       "Flags": 0,
-      "Name": "IslandCtrl4",
-      "Position": "0,-736,0",
+      "Name": "IslandCtrl3",
+      "Position": "274.6749,-791.9598,0",
+      "Rotation": "0,0,0.1478868,0.9890043",
       "Enabled": true,
       "Components": [
         {
           "__type": "Island",
           "__guid": "b4406ba1-f12b-4166-ab04-12750cf15eef",
           "Floors": [],
-          "Map": {
-            "_type": "component",
-            "component_id": "ef476932-2d99-47db-a69e-b5eafcd351f4",
-            "go": "30532a55-ac4f-4fbe-97f2-2c63a5039bd0",
-            "component_type": "MapInstance"
-          },
-          "OriginPoint": "0,0,128"
+          "OriginPoint": "0,0,0"
         },
         {
           "__type": "Sandbox.BoxCollider",
           "__guid": "56acce1a-acf2-4e3d-a427-0d57706b292d",
-          "Center": "0,0,23",
+          "Center": "0,0,-436",
           "IsTrigger": false,
-          "Scale": "640,640,50",
+          "Scale": "640,640,880",
           "Static": false
-        }
-      ],
-      "Children": [
-        {
-          "__guid": "30532a55-ac4f-4fbe-97f2-2c63a5039bd0",
-          "Flags": 0,
-          "Name": "Island4",
-          "Position": "16,0,0",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.MapInstance",
-              "__guid": "ef476932-2d99-47db-a69e-b5eafcd351f4",
-              "__version": 1,
-              "EnableCollision": false,
-              "MapName": "maps/prefabs.vmap",
-              "NoOrigin": false,
-              "UseMapFromLaunch": false
-            }
-          ],
-          "Children": []
         }
       ]
     },
@@ -495,6 +418,24 @@
           ]
         }
       ]
+    },
+    {
+      "__guid": "9c18e47a-3961-4b91-8aaa-72853122936a",
+      "Flags": 0,
+      "Name": "Island",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "Sandbox.MapInstance",
+          "__guid": "1c10f917-80b6-4e17-b2a3-fb92df7e26ee",
+          "__version": 1,
+          "EnableCollision": false,
+          "MapName": "maps/islands.vmap",
+          "NoOrigin": false,
+          "UseMapFromLaunch": false
+        }
+      ],
+      "Children": []
     }
   ],
   "SceneProperties": {

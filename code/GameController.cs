@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.Services;
 using System;
 
@@ -30,8 +31,6 @@ public sealed class GameController : Component
 	List<Island> EmptyIslands = new List<Island>();
 
 	float CamAccel = 0;
-
-	Leaderboards.Board Board;
 
 	protected override void OnAwake()
 	{
@@ -347,6 +346,11 @@ public sealed class GameController : Component
 		for ( int i = 0; i < matchedFloors.Count; i++ )
 		{
 			height += matchedFloors[i].Height;
+
+			// var pcf = Particles.Create( "particles/star.vpcf" );
+			// pcf.SetPosition( 0, new Vector3( matchedFloors[i].Transform.Position ) );
+			// pcf.Destroy();
+			
 			matchedFloors[i].GameObject.Destroy();
 		}
 

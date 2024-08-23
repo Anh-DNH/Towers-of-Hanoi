@@ -3,8 +3,7 @@ using Sandbox;
 public sealed class Island : Component
 {
 	[Property] public Vector3 OriginPoint { get; set; }
-	[Property] MapInstance Map { get; set; }
-
+	
 	[Property] public List<Floor> Floors { get; set; }
 	[RequireComponent] BoxCollider BoxCollider {  get; set; }
 

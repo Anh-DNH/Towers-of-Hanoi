@@ -5,7 +5,7 @@
   "Ident": "towers_of_hanoi",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "models/towerdesign1.fbx\nmodels/towerdesign2.fbx\nmodels/towerdesign3.fbx\nmodels/towerdesign4.fbx\nmaps/prefabs.los\nfonts/ITCKRIST.TTF",
+  "Resources": "fonts/Socafe.ttf\nimages/instruction_1.png\nimages/instruction_2.png\nimages/instruction_3.png",
   "PackageReferences": [],
   "EditorReferences": null,
   "IsWhitelistDisabled": false,

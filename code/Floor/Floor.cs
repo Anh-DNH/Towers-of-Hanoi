@@ -32,7 +32,6 @@ public class Floor : Component
 		if ( MovePoint.Count > 0 )
 		{
 			var pos = new Vector3( MovePoint[0] );
-			Gizmo.Draw.Line( Transform.Position, pos );
 			FinalPoint = new Vector3( MovePoint.Last() );
 			Transform.Position += (pos - Transform.Position) * MovePoint[0].w;
 

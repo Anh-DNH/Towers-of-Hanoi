@@ -13,9 +13,6 @@ public sealed class GameController : Component
 	List<Floor> matchedFloors = new List<Floor>();
 	List<Floor> matchedFloorsAbove = new List<Floor>();
 
-	Vector3 Begin;
-	Vector3 End;
-
 	public long Highest = 1;
 	public long Point = 0;
 
@@ -72,9 +69,6 @@ public sealed class GameController : Component
 			}
 		}
 
-		if ( Begin != End )
-			Gizmo.Draw.Arrow( Begin, End, 24, 16 );
-
 		if ( Input.EscapePressed)
 		{
 			Input.EscapePressed = false;
@@ -107,7 +101,7 @@ public sealed class GameController : Component
 			matchedFloors.Count > 0 &&
 			matchedFloors[0].MovePoint.Count == 0
 		)
-			{ ClearMatchedFloor(); }
+			ClearMatchedFloor();
 		
 		//Log.Info(String.Format("{0:0.0}", CamAccel));
 		var pos = new Vector3(Transform.Position);
@@ -120,8 +114,6 @@ public sealed class GameController : Component
 		var traceResult = Scene.Trace
 			.Ray( Scene.Camera.ScreenPixelToRay( Mouse.Position ), 5000 )
 			.Run();
-		Begin = traceResult.StartPosition;
-		End = traceResult.EndPosition;
 
 		if ( traceResult.GameObject == null ) return null;
 

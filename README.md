@@ -5,7 +5,7 @@ INSTRUCTION:
 You play this game like a regular Tower of Hanoi game: Stack tower from the largest to the smallest.
 ![Step 1](/Assets/images/instruction_1.png?raw=true)
 
-But when you stack 3 towers with the same color, you will get bonus point
+But when you stack 3 towers with the same color, you will get bonus point.
 ![Step 2](/Assets/images/instruction_3.png?raw=true)
 
 Stack the tower as highest as possible, or get the highest score possible to compete with other people in the Leaderboard.
